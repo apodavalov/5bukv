@@ -52,6 +52,18 @@ Execute the following command to start.
 
 It usually takes about a minute.
 
+## Get Metric for a Word
+
+This mode computes a metric for a candidate across the dictionary.
+
+Execute the following command to start.
+
+```shell
+5LettersBin/bin/Release/net8.0/5LettersBin metric russian5.txt катер
+```
+
+It works almost instantly. No waiting time.
+
 ## Help
 
 Just execute the following command.
@@ -59,5 +71,9 @@ Just execute the following command.
 ```shell
 5LettersBin/bin/Release/net8.0/5LettersBin
 ```
+
+## Alternative Dictionary
+
+Substitute `russian5.txt` with `altrussian5.txt` in the commands above. The first suggest is `норка`.
 
 Enjoy!

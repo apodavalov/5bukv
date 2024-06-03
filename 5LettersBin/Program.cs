@@ -73,6 +73,18 @@ namespace FiveLetters
             return candidatesMin;
         }
 
+        static void GetMetric(List<Word> words, Word guess)
+        {
+            int applicableWordsCount = 0;
+            foreach (Word word in words)
+            {
+                applicableWordsCount = GetMatchWordCount(words, word, guess,
+                    applicableWordsCount, words.Count * words.Count);
+            }
+            Console.WriteLine("Word: {0}, Metric {1}. Mean number of words: {2}.", guess,
+                applicableWordsCount, Math.Round(applicableWordsCount / (double)words.Count));
+        }
+
         static List<Word> FilterWords(List<Word> words, State state)
         {
             List<Word> result = [];
@@ -188,6 +200,7 @@ namespace FiveLetters
 
         static string Contains(List<string> words, string word) {
             if (words.BinarySearch(word) < 0) {
+                Console.WriteLine("The dictionary doesn't contain '{0}'", word);
                 ShowHelpAndTerminate();
             }
             return word;
@@ -205,6 +218,9 @@ namespace FiveLetters
             Console.WriteLine();
             Console.WriteLine("\t$ {0} interactive /path/to/dictionary suggest", exeName);
             Console.WriteLine("\t\tStarts interactive mode to play the game.");
+            Console.WriteLine();
+            Console.WriteLine("\t$ {0} metric /path/to/dictionary suggest", exeName);
+            Console.WriteLine("\t\tComputes the metric.");
             Console.WriteLine();
             Console.WriteLine("The '/path/to/dictionary' is path to a file that contains"); 
             Console.WriteLine("russian words.");
@@ -244,6 +260,9 @@ namespace FiveLetters
                     break;
                 case "interactive":
                     PlayInteractiveGame(fiveLetterWords, new Word(Contains(allWords, args[2])));
+                    break;
+                case "metric":
+                    GetMetric(fiveLetterWords, new Word(Contains(allWords, args[2])));
                     break;
                 default:
                     ShowHelpAndTerminate();
