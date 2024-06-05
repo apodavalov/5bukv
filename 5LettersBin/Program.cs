@@ -40,14 +40,21 @@ namespace FiveLetters
                     }
                 }
             }
+            if (applicableWordsCount <= currentApplicableWordCount) {
+                applicableWordsCount += words.Count;
+            }
             return applicableWordsCount;
         }
 
-        static List<Word> GetCandidates(List<Word> words)
+        static List<Word> GetCandidates(List<Word> words, List<Word> globalWords)
         {
+            if (words.Count == 1) {
+                return words;
+            }
+
             int minApplicableWordsCount = words.Count * words.Count;
             List<Word> candidatesMin = [];
-            foreach (Word guess in words)
+            foreach (Word guess in globalWords)
             {
                 int applicableWordsCount = 0;
                 foreach (Word word in words)
@@ -70,6 +77,7 @@ namespace FiveLetters
                     candidatesMin.Add(guess);
                 }
             }
+
             return candidatesMin;
         }
 
@@ -98,8 +106,9 @@ namespace FiveLetters
             return result;
         }
 
-        static int HiddenWordGame(int index, List<Word> words, Word firstGuess)
+        static int HiddenWordGame(int index, List<Word> globalWords, Word firstGuess)
         {
+            List<Word> words = globalWords;
             Word hiddenWord = words[index];
             Word guess = firstGuess;
             int attemptCount = 1;
@@ -107,7 +116,7 @@ namespace FiveLetters
             {
                 State currentState = new(hiddenWord, guess);
                 words = FilterWords(words, currentState);
-                List<Word> candidates = GetCandidates(words);
+                List<Word> candidates = GetCandidates(words, globalWords);
                 guess = candidates[0];
                 ++attemptCount;
             }
@@ -118,7 +127,7 @@ namespace FiveLetters
         {
             Console.WriteLine("Getting first candidate...");
             Stopwatch stopwatch = Stopwatch.StartNew();
-            List<Word> candidates = GetCandidates(words);
+            List<Word> candidates = GetCandidates(words, words);
             stopwatch.Stop();
             Console.WriteLine("Candidates: {0}.", string.Join(", ", candidates));
             Console.WriteLine("Time Elapsed: {0}.", stopwatch.Elapsed);
@@ -173,9 +182,10 @@ namespace FiveLetters
             } while (true);
         }
 
-        static void PlayInteractiveGame(List<Word> words, Word firstGuess) {
+        static void PlayInteractiveGame(List<Word> globalWords, Word firstGuess) {
             Word guess = firstGuess;
             int attempt = 0;
+            List<Word> words = globalWords;
             do
             {
                 ++attempt;
@@ -187,7 +197,7 @@ namespace FiveLetters
                     break;
                 }
                 words = FilterWords(words, state.Value);
-                List<Word> candidates = GetCandidates(words);
+                List<Word> candidates = GetCandidates(words, globalWords);
                 if (candidates.Count <= 0)
                 {
                     Console.WriteLine("No candidates left. It means that one of the previous " + 
