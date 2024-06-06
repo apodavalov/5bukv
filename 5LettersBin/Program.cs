@@ -197,6 +197,11 @@ namespace FiveLetters
                     break;
                 }
                 words = FilterWords(words, state.Value);
+                if (words.Count <= 0) {
+                    Console.WriteLine("No words left. It means that one of the previous " + 
+                        "mask was entered incorrectly.");
+                    break;
+                }
                 List<Word> candidates = GetCandidates(words, globalWords);
                 if (candidates.Count <= 0)
                 {
