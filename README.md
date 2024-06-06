@@ -24,7 +24,7 @@ You should see *Build succeeded.*
 Execute the following command to start the bot.
 
 ```shell
-5LettersBin/bin/Release/net8.0/5LettersBin interactive russian5.txt катер
+5LettersBin/bin/Release/net8.0/5LettersBin interactive russian5.txt норка
 ```
 
 It works almost instantly. No waiting time.
@@ -47,7 +47,7 @@ and starts the game. Once all the rounds completed it shows the collected statis
 Execute the following command to start.
 
 ```shell
-5LettersBin/bin/Release/net8.0/5LettersBin stats russian5.txt катер
+5LettersBin/bin/Release/net8.0/5LettersBin stats russian5.txt норка
 ```
 
 It usually takes about 12 minutes.
@@ -59,7 +59,7 @@ This mode computes a metric for a candidate across the dictionary.
 Execute the following command to start.
 
 ```shell
-5LettersBin/bin/Release/net8.0/5LettersBin metric russian5.txt катер
+5LettersBin/bin/Release/net8.0/5LettersBin metric russian5.txt норка
 ```
 
 It works almost instantly. No waiting time.
