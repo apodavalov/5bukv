@@ -27,7 +27,7 @@ Execute the following command to start the bot.
 5LettersBin/bin/Release/net8.0/5LettersBin interactive russian5.txt катер
 ```
 
-It works instantly. No waiting time.
+It works almost instantly. No waiting time.
 
 ## Get First Suggest
 
@@ -37,7 +37,7 @@ The first word that should be entered into the game is always the same. Use the 
 5LettersBin/bin/Release/net8.0/5LettersBin first russian5.txt
 ```
 
-It usually takes about a minute.
+It usually takes about 4 minutes.
 
 ## Collect Statistics
 
@@ -50,7 +50,7 @@ Execute the following command to start.
 5LettersBin/bin/Release/net8.0/5LettersBin stats russian5.txt катер
 ```
 
-It usually takes about a minute.
+It usually takes about 12 minutes.
 
 ## Get Metric for a Word
 
@@ -71,9 +71,5 @@ Just execute the following command.
 ```shell
 5LettersBin/bin/Release/net8.0/5LettersBin
 ```
-
-## Alternative Dictionary
-
-Substitute `russian5.txt` with `altrussian5.txt` in the commands above. The first suggest is `норка`.
 
 Enjoy!
