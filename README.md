@@ -7,7 +7,7 @@
 1. Install dotnet SDK 8.0. Follow the [instructions](https://dotnet.microsoft.com/en-us/download).
 1. [Download](https://github.com/apodavalov/5bukv/archive/refs/heads/main.zip) this repository.
 1. Unpack the downloaded zip-archive.
-1. Open *Commmand Prompt* (Windows) or *Terminal* (Unix) and proceed to the directory with unpacked 
+1. Open *Command Prompt* (Windows) or *Terminal* (Unix) and proceed to the directory with unpacked 
    data. Thus, the current directory should contain `russian5.txt`. Use `cd` command to change directory.
 1. Execute the following command to compile the project.
 
