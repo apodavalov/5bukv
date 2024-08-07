@@ -5,6 +5,8 @@ namespace FiveLetters
 {
     internal class Program
     {
+        internal readonly record struct LetterAndColors(Letter Letter, ConsoleColor ForegroundColor, ConsoleColor BackgroundColor);
+
         static List<string> LoadWords(string filename)
         {
             HashSet<string> words = [];
@@ -156,6 +158,32 @@ namespace FiveLetters
             Console.WriteLine("Time Elapsed: {0}.", stopwatch.Elapsed);
         }
 
+        static LetterAndColors GetCharColor(Letter letter, char mask) {
+            switch (mask) {
+                case 'g':
+                    return new LetterAndColors(letter, ConsoleColor.White, ConsoleColor.DarkGray);
+                case 'w':
+                    return new LetterAndColors(letter, ConsoleColor.Black, ConsoleColor.White);
+                case 'y':
+                    return new LetterAndColors(letter, ConsoleColor.Black, ConsoleColor.Yellow);
+                default:
+                    // unreachable
+                    return new LetterAndColors(letter, ConsoleColor.White, ConsoleColor.Red);
+            }
+        }
+
+        static void PrintEnteredState(string mask, Word guess) {
+            Console.Write("Entered state: ");
+            foreach (LetterAndColors letterAndColors in guess.Zip(mask)
+                .Select(letterCharTuple => GetCharColor(letterCharTuple.Item1, letterCharTuple.Item2))) {
+                Console.ForegroundColor = letterAndColors.ForegroundColor;
+                Console.BackgroundColor = letterAndColors.BackgroundColor;
+                Console.Write(letterAndColors.Letter.ToChar());
+            }
+            Console.ResetColor();
+            Console.WriteLine(".");
+        }
+
         static State? GetMask(Word guess)
         {
             do
@@ -163,14 +191,12 @@ namespace FiveLetters
                 Console.Write("Enter state (e.g gwwwh, g - not present, w - wrong place, " + 
                     "y - correct place; yyyyy - to exit): ");
                 string enteredValue = Console.ReadLine() ?? "";
-                Console.WriteLine();
-                if (enteredValue == "yyyyy")
-                {
-                    return null;
-                }
                 try
                 {
-                    return new(enteredValue, guess);
+                    State? state = enteredValue == "yyyyy" ? null : new(enteredValue, guess);
+                    PrintEnteredState(enteredValue, guess);
+                    Console.WriteLine();
+                    return state;
                 }
                 catch (ArgumentException)
                 {
