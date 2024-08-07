@@ -187,7 +187,14 @@ namespace FiveLetters
             {
                 ++attempt;
                 Console.WriteLine("There are {0} words left.", words.Count);
-                Console.WriteLine("Attempt: {0}, Guess: {1}.", attempt, guess);
+                if (words.Count < 10) {
+                    Console.WriteLine("Words left: {0}.", string.Join(", ", words));
+                }
+                Console.Write("Attempt: {0}, Guess: ", attempt);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(guess);
+                Console.ResetColor();
+                Console.WriteLine(".");
                 State? state = GetMask(guess);
                 if (state == null)
                 {
