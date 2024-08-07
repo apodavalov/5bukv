@@ -40,9 +40,6 @@ namespace FiveLetters
                     }
                 }
             }
-            if (applicableWordsCount <= currentApplicableWordCount) {
-                applicableWordsCount += words.Count;
-            }
             return applicableWordsCount;
         }
 
