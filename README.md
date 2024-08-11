@@ -37,7 +37,7 @@ The first word that should be entered into the game is always the same. Use the 
 5LettersBin/bin/Release/net8.0/5LettersBin first russian5.txt
 ```
 
-It usually takes about 4 minutes.
+It usually takes about 6 minutes.
 
 ## Collect Statistics
 
@@ -50,7 +50,7 @@ Execute the following command to start.
 5LettersBin/bin/Release/net8.0/5LettersBin stats russian5.txt норка
 ```
 
-It usually takes about 12 minutes.
+It usually takes about 25 minutes.
 
 ## Get Metric for a Word
 
