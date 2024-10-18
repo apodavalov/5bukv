@@ -20,15 +20,17 @@ namespace FiveLetters
                 }
             }
 
-            if (!noDuplicates) {
+            if (!noDuplicates)
+            {
                 Console.WriteLine("The dictionary contains duplicates.");
             }
 
             return [.. words.Order()];
         }
 
-        static int GetMatchWordCount(List<Word> words, Word word, Word guess, 
-            int currentApplicableWordCount, int observedMinApplicableWordCount) {
+        static int GetMatchWordCount(List<Word> words, Word word, Word guess,
+            int currentApplicableWordCount, int observedMinApplicableWordCount)
+        {
             int applicableWordsCount = currentApplicableWordCount;
             State state = new(word, guess);
             foreach (Word wordToCheck in words)
@@ -47,7 +49,8 @@ namespace FiveLetters
 
         static List<Word> GetCandidates(List<Word> words, List<Word> globalWords)
         {
-            if (words.Count == 1) {
+            if (words.Count == 1)
+            {
                 return words;
             }
 
@@ -58,7 +61,7 @@ namespace FiveLetters
                 int applicableWordsCount = 0;
                 foreach (Word word in words)
                 {
-                    applicableWordsCount = GetMatchWordCount(words, word, guess, 
+                    applicableWordsCount = GetMatchWordCount(words, word, guess,
                         applicableWordsCount, minApplicableWordsCount);
                     if (applicableWordsCount > minApplicableWordsCount)
                     {
@@ -138,9 +141,14 @@ namespace FiveLetters
             Stopwatch stopwatch = Stopwatch.StartNew();
             int maxAttempts = 0;
             List<Word> fails = [];
+            Dictionary<int, int> attempts = [];
             for (int i = 0; i < words.Count; ++i)
             {
                 int attempt_count = HiddenWordGame(i, words, firstGuess);
+                if (!attempts.TryAdd(attempt_count, 1))
+                {
+                    ++attempts[attempt_count];
+                }
                 if (attempt_count > 6)
                 {
                     fails.Add(words[i]);
@@ -152,14 +160,21 @@ namespace FiveLetters
             }
             stopwatch.Stop();
             Console.WriteLine("Fail count: {0}, Max attempts: {1}.", fails.Count, maxAttempts);
-            if (fails.Count > 0) {
+            if (fails.Count > 0)
+            {
                 Console.WriteLine("Fail words: {0}.", string.Join(", ", fails));
+            }
+            foreach ((int attempt_count, int word_count) in attempts.OrderBy(pair => pair.Key))
+            {
+                Console.WriteLine("Attempt/word count: {0}/{1}.", attempt_count, word_count);
             }
             Console.WriteLine("Time Elapsed: {0}.", stopwatch.Elapsed);
         }
 
-        static LetterAndColors GetCharColor(Letter letter, char mask) {
-            switch (mask) {
+        static LetterAndColors GetCharColor(Letter letter, char mask)
+        {
+            switch (mask)
+            {
                 case 'g':
                     return new LetterAndColors(letter, ConsoleColor.White, ConsoleColor.DarkGray);
                 case 'w':
@@ -172,10 +187,12 @@ namespace FiveLetters
             }
         }
 
-        static void PrintEnteredState(string mask, Word guess) {
+        static void PrintEnteredState(string mask, Word guess)
+        {
             Console.Write("Entered state: ");
             foreach (LetterAndColors letterAndColors in guess.Zip(mask)
-                .Select(letterCharTuple => GetCharColor(letterCharTuple.Item1, letterCharTuple.Item2))) {
+                .Select(letterCharTuple => GetCharColor(letterCharTuple.Item1, letterCharTuple.Item2)))
+            {
                 Console.ForegroundColor = letterAndColors.ForegroundColor;
                 Console.BackgroundColor = letterAndColors.BackgroundColor;
                 Console.Write(letterAndColors.Letter.ToChar());
@@ -188,7 +205,7 @@ namespace FiveLetters
         {
             do
             {
-                Console.Write("Enter state (e.g gwwwh, g - not present, w - wrong place, " + 
+                Console.Write("Enter state (e.g gwwwh, g - not present, w - wrong place, " +
                     "y - correct place; yyyyy - to exit): ");
                 string enteredValue = Console.ReadLine() ?? "";
                 try
@@ -205,7 +222,8 @@ namespace FiveLetters
             } while (true);
         }
 
-        static void PlayInteractiveGame(List<Word> globalWords, Word firstGuess) {
+        static void PlayInteractiveGame(List<Word> globalWords, Word firstGuess)
+        {
             Word guess = firstGuess;
             int attempt = 0;
             List<Word> words = globalWords;
@@ -213,7 +231,8 @@ namespace FiveLetters
             {
                 ++attempt;
                 Console.WriteLine("There are {0} words left.", words.Count);
-                if (words.Count < 10) {
+                if (words.Count < 10)
+                {
                     Console.WriteLine("Words left: {0}.", string.Join(", ", words));
                 }
                 Console.Write("Attempt: {0}, Guess: ", attempt);
@@ -227,15 +246,16 @@ namespace FiveLetters
                     break;
                 }
                 words = FilterWords(words, state.Value);
-                if (words.Count <= 0) {
-                    Console.WriteLine("No words left. It means that one of the previous " + 
+                if (words.Count <= 0)
+                {
+                    Console.WriteLine("No words left. It means that one of the previous " +
                         "mask was entered incorrectly.");
                     break;
                 }
                 List<Word> candidates = GetCandidates(words, globalWords);
                 if (candidates.Count <= 0)
                 {
-                    Console.WriteLine("No candidates left. It means that one of the previous " + 
+                    Console.WriteLine("No candidates left. It means that one of the previous " +
                         "mask was entered incorrectly.");
                     break;
                 }
@@ -243,16 +263,19 @@ namespace FiveLetters
             } while (attempt < 6);
         }
 
-        static string Contains(List<string> words, string word) {
-            if (words.BinarySearch(word) < 0) {
+        static string Contains(List<string> words, string word)
+        {
+            if (words.BinarySearch(word) < 0)
+            {
                 Console.WriteLine("The dictionary doesn't contain '{0}'", word);
                 ShowHelpAndTerminate();
             }
             return word;
         }
 
-        static void ShowHelpAndTerminate() {
-            string exeName = AppDomain.CurrentDomain.FriendlyName;                 
+        static void ShowHelpAndTerminate()
+        {
+            string exeName = AppDomain.CurrentDomain.FriendlyName;
             Console.WriteLine("Three way of usage: ");
             Console.WriteLine();
             Console.WriteLine("\t$ {0} first /path/to/dictionary", exeName);
@@ -267,7 +290,7 @@ namespace FiveLetters
             Console.WriteLine("\t$ {0} metric /path/to/dictionary suggest", exeName);
             Console.WriteLine("\t\tComputes the metric.");
             Console.WriteLine();
-            Console.WriteLine("The '/path/to/dictionary' is path to a file that contains"); 
+            Console.WriteLine("The '/path/to/dictionary' is path to a file that contains");
             Console.WriteLine("russian words.");
             Console.WriteLine("Each line of the file represents a single 5 letter russian word.");
             Console.WriteLine("All the letters must be in lowercase.");
@@ -282,21 +305,24 @@ namespace FiveLetters
         }
 
         static void Main(string[] args)
-        {       
+        {
             Console.OutputEncoding = Encoding.UTF8;
-            if (args.Length < 2 || args[0] != "first" && args.Length < 3) {
+            if (args.Length < 2 || args[0] != "first" && args.Length < 3)
+            {
                 ShowHelpAndTerminate();
             }
 
             List<string> allWords = LoadWords(args[1]);
             List<Word> fiveLetterWords = allWords.Select(word => new Word(word)).ToList();
             Console.WriteLine(string.Format("Loaded {0} words.", fiveLetterWords.Count));
-            if (fiveLetterWords.Count <= 0) {
+            if (fiveLetterWords.Count <= 0)
+            {
                 Console.WriteLine("The dictionary doesn't contain words.");
                 Environment.Exit(1);
             }
 
-            switch (args[0]) {
+            switch (args[0])
+            {
                 case "first":
                     GetFirstCandidate(fiveLetterWords);
                     break;
